@@ -1,0 +1,76 @@
+{% set name = "multipers" %}
+{% set version = "2.0.5" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  - url: https://github.com/DavidLapous/multipers/archive/refs/tags/v{{ version }}.tar.gz
+    sha256: 5ae350128e9f533c8cbc13350c7d3433e197c59c9822715dbbe75244539239ff
+
+build:
+  number: 0
+  skip: true  # [py<310]
+  script:
+    -  {{ PYTHON }} -m pip install -vv --no-deps --ignore-installed .
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - cython                                 # [build_platform != target_platform]
+    - numpy                                  # [build_platform != target_platform]
+    - pybind11                               # [build_platform != target_platform]
+    - boost                                  # [build_platform != target_platform]
+    - cgal-cpp                               # [build_platform != target_platform]
+    - tbb-devel                              # [build_platform != target_platform]
+  host:
+    - python
+    - pip
+    - cython
+    - pybind11
+    - boost
+    - numpy
+    - cgal-cpp
+    - tbb-devel
+    - scikit-learn
+  run:
+    - python
+    - cycler
+    - gudhi
+    - joblib
+    - networkx
+    - pandas
+    - pytorch
+    - pot
+    - matplotlib
+    - mdanalysis
+    - plotly
+    - scipy
+    - scikit-learn
+    - sympy
+    - shapely
+    - tbb
+    - tqdm
+    - typing
+
+test:
+  imports:
+    - multipers
+  # commands:
+  #   - pip check
+  # requires:
+  #   - pip
+
+about:
+  home: https://github.com/DavidLapous/multipers
+  summary: Multiparameter Persistence for Machine Learning
+  license: MIT
+  license_file: LICENSE
+  doc_url: https://www-sop.inria.fr/members/David.Loiseaux/doc/multipers/index.html
+
+extra:
+  recipe-maintainers:
+    - yhori991
